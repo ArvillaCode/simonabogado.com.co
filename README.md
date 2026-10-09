@@ -49,4 +49,3 @@ La propuesta conserva `noindex,nofollow` mientras el cliente decide su versión 
 - Las apariciones se reproducen una sola vez; el parallax funciona solo en escritorio.
 - Se respeta `prefers-reduced-motion`; el contenido permanece disponible sin JavaScript.
 - Los enlaces externos abren una pestaña nueva; no se envían mensajes automáticamente.
-
