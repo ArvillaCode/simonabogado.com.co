@@ -88,11 +88,12 @@ def header(title, description):
     markup = adapt_shared(SOURCE.split('<main id="contenido">',1)[0])
     markup = re.sub(r'<title>.*?</title>',f'<title>{escape(title)} · Simón Abogado</title>',markup)
     markup = re.sub(r'<meta name="description" content="[^"]*">',f'<meta name="description" content="{escape(description,quote=True)}">',markup)
-    return markup.replace('</head>','<link rel="stylesheet" href="/b/variant.css"></head>')
+    markup = markup.replace('<link rel="stylesheet" href="/motion.css">', '')
+    return markup.replace('</head>','<link rel="stylesheet" href="/b/variant.css"><link rel="stylesheet" href="/b/scroll-effects.css"></head>')
 
 def footer(contact_url=GENERAL):
     markup = adapt_shared('<footer>'+SOURCE.split('<footer>',1)[1])
-    return markup.replace(GENERAL,contact_url)
+    return markup.replace(GENERAL,contact_url).replace('src="/app.js"', 'src="/b/scroll-effects.js"')
 
 def steps(items):
     return '<div class="steps">'+''.join(f'<article><span class="step-label">0{i}</span><h3>{title}</h3><p>{text}</p></article>' for i,(title,text) in enumerate(items,1))+'</div>'
