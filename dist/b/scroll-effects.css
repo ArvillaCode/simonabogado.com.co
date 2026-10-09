@@ -25,9 +25,16 @@ main{overflow-x:clip}.header{transition:box-shadow .25s ease,background .25s eas
  .motion-ready.is-in,.motion-ready:focus-within{transform:none}
  .service-card.is-in:hover{transform:none}
 }
+.motion-control{display:block;margin-top:22px;padding:7px 0;background:transparent;border:0;border-bottom:1px solid #d7bc8980;color:#d7bc89;font-size:.8125rem;min-height:44px;text-align:left}.motion-control:hover{color:#fff}
+html[data-motion="off"] .motion-ready{opacity:1!important;transform:none!important;clip-path:none!important;transition:none!important}
+html[data-motion="off"] .motion-ready[data-effect="step"]::before{transform:none;transition:none}
 @media(prefers-reduced-motion:reduce){
- .motion-ready{opacity:1!important;transform:none!important;clip-path:none!important;transition:none!important}
- .motion-ready[data-effect="step"]::before{transform:none;transition:none}
- .portrait.has-parallax>img,.detail-image.has-parallax>img{transform:none}
+ html:not([data-motion="on"]) .motion-ready{opacity:1!important;transform:none!important;clip-path:none!important;transition:none!important}
+ html:not([data-motion="on"]) .motion-ready[data-effect="step"]::before{transform:none;transition:none}
+ html:not([data-motion="on"]) .portrait.has-parallax>img,html:not([data-motion="on"]) .detail-image.has-parallax>img{transform:none}
+ /* User opt-in overrides the shared stylesheet's reduced-motion transition rule. */
+ html[data-motion="on"] .motion-ready{transition:opacity .65s ease var(--motion-delay),transform .75s cubic-bezier(.2,.7,.2,1) var(--motion-delay),clip-path .75s ease var(--motion-delay)!important}
+ html[data-motion="on"] .motion-ready[data-effect="step"]::before{transition:transform .85s ease var(--motion-delay)!important}
 }
 @media print{.motion-ready{opacity:1!important;transform:none!important;clip-path:none!important}.whatsapp-float{display:none}}
+

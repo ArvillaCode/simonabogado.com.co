@@ -5,6 +5,15 @@ const whatsapp = document.querySelector('.whatsapp-float');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const desktop = window.matchMedia('(min-width: 1001px)');
 const photo = document.querySelector('.portrait, .detail-image');
+let motionChoice = null;
+try { motionChoice = localStorage.getItem('simon-motion'); } catch (_) {}
+function motionEnabled() {
+  return motionChoice === 'on' || (motionChoice !== 'off' && !reducedMotion.matches);
+}
+function applyMotionChoice() {
+  document.documentElement.dataset.motion = motionEnabled() ? 'on' : 'off';
+}
+applyMotionChoice();
 
 function closeMenu() {
   menu.classList.remove('open');
@@ -23,7 +32,7 @@ function updateScroll() {
   header.classList.toggle('is-scrolled', window.scrollY > 16);
   whatsapp?.classList.toggle('is-scrolled', window.scrollY > 240);
   if (photo) {
-    const enabled = desktop.matches && !reducedMotion.matches;
+    const enabled = desktop.matches && motionEnabled();
     photo.classList.toggle('has-parallax', enabled);
     const offset = enabled ? Math.max(-24, Math.min(24, -photo.getBoundingClientRect().top * .065)) : 0;
     photo.style.setProperty('--photo-offset', `${offset}px`);
@@ -44,7 +53,8 @@ updateScroll();
 // A separate choreography for each section, revealed once on entry.
 const targets = new Set();
 let observer;
-if ('IntersectionObserver' in window && !reducedMotion.matches) {
+function initializeEffects() {
+  if (!('IntersectionObserver' in window) || !motionEnabled() || targets.size) return;
   observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
@@ -90,6 +100,26 @@ if ('IntersectionObserver' in window && !reducedMotion.matches) {
   animate('.contact > p:not(.eyebrow), .contact > .button, .contact > .contact-note, .contact > .other-service', 'rise', 80);
   animate('footer > *', 'rise', 70);
 }
+initializeEffects();
+
+// Offer an explicit site-only override; never change the visitor's system setting.
+const motionControl = document.createElement('button');
+motionControl.type = 'button';
+motionControl.className = 'motion-control';
+function updateMotionControl() {
+  motionControl.textContent = motionEnabled() ? 'Desactivar animaciones' : 'Activar animaciones';
+  motionControl.setAttribute('aria-pressed', String(motionEnabled()));
+}
+updateMotionControl();
+document.querySelector('.hero-copy, .detail-intro')?.append(motionControl);
+motionControl.addEventListener('click', () => {
+  motionChoice = motionEnabled() ? 'off' : 'on';
+  try { localStorage.setItem('simon-motion', motionChoice); } catch (_) {}
+  applyMotionChoice();
+  updateMotionControl();
+  // Reload initializes the entrance effects and observers from a clean state.
+  window.location.reload();
+});
 
 // Keyboard navigation must never land on an invisible link or control.
 document.addEventListener('focusin', event => {
@@ -103,14 +133,19 @@ document.addEventListener('focusin', event => {
   }
 });
 reducedMotion.addEventListener('change', () => {
+  applyMotionChoice();
+  updateMotionControl();
   queueScroll();
-  if (reducedMotion.matches) {
+  if (!motionEnabled()) {
     observer?.disconnect();
     targets.forEach(element => element.classList.add('is-in'));
+  } else {
+    initializeEffects();
   }
 });
 document.querySelector('.footer-back-top')?.addEventListener('click', event => {
   event.preventDefault();
   header.focus({ preventScroll: true });
-  window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+  window.scrollTo({ top: 0, behavior: motionEnabled() ? 'smooth' : 'instant' });
 });
+
