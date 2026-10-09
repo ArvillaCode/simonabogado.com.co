@@ -88,7 +88,6 @@ function initializeEffects() {
   animate('.process .section-heading, .detail-outcomes .section-heading', 'wipe');
   animate('.steps article', 'step', 140);
   animate('.testimonials .section-heading', 'zoom');
-  animate('.review-card', 'review', 100);
   animate('.questions > div:first-child', 'wipe');
   animate('.faq-list > details', 'row', 75);
   animate('.detail-context > div', 'left');
