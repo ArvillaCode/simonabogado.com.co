@@ -97,6 +97,9 @@ function initializeEffects() {
   animate('.contact > .eyebrow', 'rise');
   animate('.contact > h2', 'zoom');
   animate('.contact > p:not(.eyebrow), .contact > .button, .contact > .contact-note, .contact > .other-service', 'rise', 80);
+  animate('.legal-context .section-heading, .risk-note', 'rise');
+  animate('.legal-options article', 'rise', 70);
+  animate('.location > div, .related-services', 'rise', 70);
   animate('footer > *', 'rise', 70);
 }
 initializeEffects();

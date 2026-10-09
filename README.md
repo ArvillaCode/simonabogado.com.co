@@ -54,7 +54,7 @@ Para editar B, modificar `build_version_b.py` y ejecutar `python build_version_b
 
 Los cinco testimonios de B fueron proporcionados y confirmados como reales por el cliente. Los nombres fueron proporcionados por el cliente, en el mismo orden de los servicios. Los retratos son imágenes de muestra generadas con IA para presentar el diseño, identificadas en cada tarjeta; no corresponden a las personas citadas. No se inventan fechas, calificaciones ni afiliaciones a plataformas de reseñas.
 
-La propuesta conserva `noindex,nofollow` mientras el cliente decide su versión final. Antes del lanzamiento para buscadores, retirar esa etiqueta desde `build_content.py`, regenerar las páginas y publicar.
+Las propuestas permanecen fuera del índice mientras el cliente decide: A conserva `noindex,nofollow`; B establece `noindex,follow` en su propio generador. Antes de activar la versión definitiva, planificar las rutas canónicas, la indexación y el sitemap. Ver `seo-implementation-notes.txt`.
 
 ## Interacciones y accesibilidad
 
@@ -64,3 +64,7 @@ La propuesta conserva `noindex,nofollow` mientras el cliente decide su versión 
 - Se respeta `prefers-reduced-motion`; el contenido permanece disponible sin JavaScript.
 - Los enlaces externos abren una pestaña nueva; no se envían mensajes automáticamente.
 
+
+## Optimización local de B
+
+`business_profile.json` centraliza dirección, horario y datos profesionales confirmados. `local_content.py` contiene los seis enfoques de servicio, preguntas y fuentes oficiales. `local_sections.py` renderiza ubicación, bloques jurídicos y metadatos. Los datos de credenciales y casos todavía vacíos se omiten. Editar y ejecutar `python build_version_b.py`.

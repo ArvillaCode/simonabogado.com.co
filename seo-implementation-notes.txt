@@ -1,0 +1,45 @@
+SIMÓN ABOGADO — OPTIMIZACIÓN DE LA PROPUESTA B
+Fecha: 9 de octubre de 2026
+
+Alcance
+- Inicio y seis servicios en /b/. La versión A y sus recursos permanecen intactos.
+- Hero: “Tus derechos merecen una defensa firme”, dos CTA y siguiente paso por WhatsApp.
+- Dirección confirmada: Carrera 51 #41-122, Edificio Calle Nueva, oficina 303, Medellín, Colombia.
+- Horario confirmado: lunes a viernes, 09:00–17:00, hora de Colombia.
+- Fuentes jurídicas visibles en cada servicio; contenido local separado en local_content.py.
+- Metadatos propios, canonical en www.simonabogado.com.co/b/, Open Graph, LegalService y Service; breadcrumbs en páginas internas.
+- No se utiliza marcado de calificaciones ni de reseñas de la propia firma.
+- Se conservan los siete enlaces wa.link proporcionados: general y seis servicios.
+- Fotografías de los testimonios siguen identificadas como imágenes de muestra generadas con IA.
+
+Información pendiente del abogado
+- Tarjeta profesional y enlace de consulta pública del registro.
+- Fechas, cargos o soportes para ampliar la trayectoria documentada.
+- Confirmar si las visitas requieren cita previa.
+- Fotografías auténticas autorizadas para reemplazar las muestras de testimonios.
+- Casos representativos anonimizados y autorizados para su publicación.
+business_profile.json contiene campos preparados para esos datos. Los campos vacíos no se renderizan.
+
+SEO antes del lanzamiento definitivo
+- Ambas propuestas siguen excluidas de indexación. B usa noindex,follow.
+- Elegir la versión final y sus rutas antes de activar la indexación.
+- Si B se convierte en la página principal, ajustar rutas/canonical, navegación y redirects como una migración planificada, conservando A como propuesta.
+- Generar sitemap con las URL finales indexables, declararlo en robots.txt y enviarlo a Search Console.
+- Registrar/verificar el Perfil de Empresa en Google con los mismos datos reales y confirmar su elegibilidad.
+- Retirar las imágenes de muestra o reemplazarlas por fotografías auténticas autorizadas antes del lanzamiento definitivo.
+- La fecha publicada indica actualización editorial del contenido, no revisión jurídica certificada por el abogado.
+
+Controles realizados
+- Siete documentos HTML: un H1, un canonical, IDs únicos, rutas locales existentes y JSON-LD válido.
+- Revisión en navegador de las siete páginas a 390, 768 y 1280 px: sin desbordamiento horizontal del documento ni imágenes cargadas rotas.
+- Apertura/cierre del menú móvil al navegar a Ubicación, y apertura de preguntas frecuentes.
+- Siete enlaces wa.link devuelven HTTP 200 y contenido de WhatsApp; no se envían mensajes.
+- No hay formularios en esta propuesta.
+- No se observaron errores JavaScript en la consola durante la revisión.
+- Logo: 520.449 bytes a 24.132 bytes. Retrato real: variantes WebP de 26.126 y 88.272 bytes, elegidas según el tamaño de pantalla.
+- Las pruebas de layout no equivalen a una medición de Core Web Vitals. Pendiente medición de campo con tráfico y Search Console; no se afirma una puntuación Lighthouse ni aprobación de CWV.
+
+Edición
+python build_version_b.py
+El generador lee business_profile.json, local_content.py y local_sections.py.
+La optimización visual vive en dist/b/optimization.css.
