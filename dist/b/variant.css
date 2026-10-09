@@ -14,3 +14,5 @@
 .testimonials .reviews-help{font-size:.75rem;line-height:1.6;color:var(--muted);margin:16px 0 0}
 @media(max-width:760px){.review-card{width:min(310px,80vw);padding:24px}.review-group{gap:16px;padding-right:16px}.hero h1{font-size:clamp(2.4rem,8.8vw,3.8rem)}}
 @media print{.review-viewport{overflow:visible}.review-track,.review-group{display:block;width:auto}.review-card{width:auto;break-inside:avoid;margin-bottom:20px}.review-group[aria-hidden="true"],.reviews-help{display:none}}
+
+.review-photo-label{display:block;font-size:.6875rem;line-height:1.5;margin-top:5px;color:var(--muted)}
