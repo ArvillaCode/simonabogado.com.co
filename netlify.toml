@@ -1,0 +1,4 @@
+# Sitio estático ya generado: no requiere comando de compilación.
+[build]
+  publish = "dist"
+  command = ""
