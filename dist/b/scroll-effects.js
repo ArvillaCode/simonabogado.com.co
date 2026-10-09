@@ -102,25 +102,6 @@ function initializeEffects() {
 }
 initializeEffects();
 
-// Offer an explicit site-only override; never change the visitor's system setting.
-const motionControl = document.createElement('button');
-motionControl.type = 'button';
-motionControl.className = 'motion-control';
-function updateMotionControl() {
-  motionControl.textContent = motionEnabled() ? 'Desactivar animaciones' : 'Activar animaciones';
-  motionControl.setAttribute('aria-pressed', String(motionEnabled()));
-}
-updateMotionControl();
-document.querySelector('.hero-copy, .detail-intro')?.append(motionControl);
-motionControl.addEventListener('click', () => {
-  motionChoice = motionEnabled() ? 'off' : 'on';
-  try { localStorage.setItem('simon-motion', motionChoice); } catch (_) {}
-  applyMotionChoice();
-  updateMotionControl();
-  // Reload initializes the entrance effects and observers from a clean state.
-  window.location.reload();
-});
-
 // Keyboard navigation must never land on an invisible link or control.
 document.addEventListener('focusin', event => {
   let element = event.target;
@@ -134,7 +115,6 @@ document.addEventListener('focusin', event => {
 });
 reducedMotion.addEventListener('change', () => {
   applyMotionChoice();
-  updateMotionControl();
   queueScroll();
   if (!motionEnabled()) {
     observer?.disconnect();
