@@ -113,7 +113,7 @@ def wa(url, label, cls='button gold'):
 def head(title, description, base=''):
     return f'''<!doctype html><html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{escape(title)} · Simón Abogado</title><meta name="description" content="{escape(description, quote=True)}"><meta name="robots" content="noindex,nofollow">
+<title>{escape(title)} · Simón Abogado</title><meta name="description" content="{escape(description, quote=True)}"><meta name="robots" content="index,follow">
 <link rel="icon" href="{base}assets/favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{base}styles.css"><link rel="stylesheet" href="{base}sections.css"><link rel="stylesheet" href="{base}services.css"><link rel="stylesheet" href="{base}footer.css"><link rel="stylesheet" href="{base}motion.css"></head><body>
 <a class="skip" href="#contenido">Ir al contenido</a><header class="header" id="inicio-pagina" tabindex="-1"><a class="brand" href="{base or './'}" aria-label="Simón Abogado, inicio"><img src="{base}assets/logo.png" alt="Simón Abogado. Compromiso que garantiza tu confianza." width="2172" height="724"></a><button class="menu-toggle" aria-expanded="false" aria-controls="menu">Menú <span aria-hidden="true">☰</span></button><nav id="menu" aria-label="Principal"><a href="{base}#servicios">Encuentra orientación</a><a href="{base}#simon">Conoce a tu abogado</a>{wa(GENERAL, 'Cuéntame tu situación', 'nav-cta')}</nav></header>'''

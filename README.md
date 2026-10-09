@@ -54,7 +54,7 @@ Para editar B, modificar `build_version_b.py` y ejecutar `python build_version_b
 
 Los cinco testimonios de B fueron proporcionados y confirmados como reales por el cliente. Los nombres también fueron proporcionados por el cliente. Los retratos son imágenes de muestra generadas con IA para presentar el diseño, identificadas en la nota al pie de la sección; no corresponden a las personas citadas. No se inventan fechas, calificaciones ni afiliaciones a plataformas de reseñas.
 
-Las propuestas permanecen fuera del índice mientras el cliente decide: A conserva `noindex,nofollow`; B establece `noindex,follow` en su propio generador. Antes de activar la versión definitiva, planificar las rutas canónicas, la indexación y el sitemap. Ver `seo-implementation-notes.txt`.
+Las páginas principales y de servicios de A y B permiten la indexación y declaran sus URL canónicas. Las rutas antiguas de servicios redirigen a la página consolidada y permanecen fuera del índice para evitar duplicados. Ver `seo-implementation-notes.txt`.
 
 ## Interacciones y accesibilidad
 

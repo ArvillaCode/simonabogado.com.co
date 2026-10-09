@@ -140,9 +140,9 @@ def header(title, description, path='/b/', service=None):
     markup = re.sub(r'<title>.*?</title>',f'<title>{escape(title)} · Simón Abogado</title>',markup)
     markup = re.sub(r'<meta name="description" content="[^"]*">',f'<meta name="description" content="{escape(description,quote=True)}">',markup)
     markup = markup.replace('<link rel="stylesheet" href="/motion.css">', '')
-    markup = re.sub(r'<meta name="robots" content="[^"]*">', '<meta name="robots" content="noindex,follow">', markup)
+    markup = re.sub(r'<meta name="robots" content="[^"]*">', '<meta name="robots" content="index,follow">', markup)
     if '<meta name="robots"' not in markup:
-        markup = markup.replace('</head>', '<meta name="robots" content="noindex,follow"></head>')
+        markup = markup.replace('</head>', '<meta name="robots" content="index,follow"></head>')
     markup = markup.replace('src="/assets/logo.png"', 'src="/b/assets/logo.webp"')
     markup = markup.replace('Encuentra orientación', 'Servicios').replace('Cuéntame tu situación', 'Hablar con un abogado')
     markup = markup.replace('<a class="nav-cta"', '<a href="/b/#ubicacion">Ubicación</a><a class="nav-cta"')

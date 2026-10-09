@@ -21,8 +21,9 @@ Información pendiente del abogado
 business_profile.json contiene campos preparados para esos datos. Los campos vacíos no se renderizan.
 
 SEO antes del lanzamiento definitivo
-- Ambas propuestas siguen excluidas de indexación. B usa noindex,follow.
-- Elegir la versión final y sus rutas antes de activar la indexación.
+- Las páginas principales y de servicios de A y B permiten la indexación (`index,follow`).
+- Las antiguas rutas de reportes crediticios y embargos permanecen con `noindex,follow` y canonical hacia la página consolidada de deudas, reportes y embargos.
+- Tras la publicación, los buscadores deben volver a rastrear las páginas para actualizar su estado en los resultados.
 - Si B se convierte en la página principal, ajustar rutas/canonical, navegación y redirects como una migración planificada, conservando A como propuesta.
 - Generar sitemap con las URL finales indexables, declararlo en robots.txt y enviarlo a Search Console.
 - Registrar/verificar el Perfil de Empresa en Google con los mismos datos reales y confirmar su elegibilidad.
