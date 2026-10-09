@@ -4,11 +4,12 @@ const header = document.querySelector('.header');
 const whatsapp = document.querySelector('.whatsapp-float');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const desktop = window.matchMedia('(min-width: 1001px)');
+const mobileViewport = window.matchMedia('(max-width: 760px)');
 const photo = document.querySelector('.portrait, .detail-image');
 let motionChoice = null;
 try { motionChoice = localStorage.getItem('simon-motion'); } catch (_) {}
 function motionEnabled() {
-  return motionChoice === 'on' || (motionChoice !== 'off' && !reducedMotion.matches);
+  return motionChoice === 'on' || (motionChoice !== 'off' && !reducedMotion.matches && !mobileViewport.matches);
 }
 function applyMotionChoice() {
   document.documentElement.dataset.motion = motionEnabled() ? 'on' : 'off';
@@ -115,7 +116,7 @@ document.addEventListener('focusin', event => {
     element = element.parentElement;
   }
 });
-reducedMotion.addEventListener('change', () => {
+function syncMotionSettings() {
   applyMotionChoice();
   queueScroll();
   if (!motionEnabled()) {
@@ -124,7 +125,9 @@ reducedMotion.addEventListener('change', () => {
   } else {
     initializeEffects();
   }
-});
+}
+reducedMotion.addEventListener('change', syncMotionSettings);
+mobileViewport.addEventListener('change', syncMotionSettings);
 document.querySelector('.footer-back-top')?.addEventListener('click', event => {
   event.preventDefault();
   header.focus({ preventScroll: true });

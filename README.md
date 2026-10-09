@@ -1,12 +1,12 @@
 # Simón Abogado
 
-Sitio de presentación de Klende Simon Villa. Incluye inicio, seis páginas de servicios, enlaces de WhatsApp por servicio y redes sociales.
+Sitio de presentación de Klende Simon Villa. Las versiones A (`/`) y B (`/b/`) presentan cuatro servicios y reúnen deudas, reportes crediticios y embargos en una sola página.
 
 ## Archivos
 
 - `dist/`: sitio completo listo para cualquier alojamiento estático.
 - `dist/assets/`: logo, retrato y portadas optimizadas en WebP.
-- `build_content.py`: contenido y plantillas para generar las siete páginas HTML.
+- `build_content.py`: contenido y plantillas para generar la página principal y cuatro servicios de A.
 - `dist/app.js` y archivos CSS: navegación, WhatsApp flotante, estilos y efectos.
 - `vercel.json`: configuración de Vercel para publicar `dist/` como raíz del sitio.
 
@@ -46,13 +46,13 @@ El archivo `CNAME` de la raíz proviene de la configuración anterior de GitHub 
 
 ## Versiones A y B
 
-La versión A se conserva en `/` y la versión B está en `/b/`, con seis páginas internas propias y siete enlaces de WhatsApp independientes. En el dominio de Vercel se accede a ambas rutas; cuando se conecte el dominio propio, serán `https://simonabogado.com.co/` y `https://simonabogado.com.co/b/`.
+La versión A se publica en `/` y la versión B en `/b/`; cada una tiene cuatro páginas de servicio y un enlace de WhatsApp por servicio, además del contacto general. En el dominio de Vercel se accede a ambas rutas; cuando se conecte el dominio propio, serán `https://simonabogado.com.co/` y `https://simonabogado.com.co/b/`.
 
 Ambas versiones comparten el mismo proyecto de Vercel y el mismo dominio: no requieren DNS separados. Cada versión mantiene sus propios enlaces de navegación y páginas de servicio; por ejemplo, `/servicios/deudas-insolvencia/` para A y `/b/servicios/deudas-insolvencia/` para B. Tener dos rutas permite presentar ambas opciones; una prueba A/B con reparto de visitantes y medición de conversiones se configura por separado.
 
 Para editar B, modificar `build_version_b.py` y ejecutar `python build_version_b.py`. Este generador escribe únicamente dentro de `dist/b/`, reutiliza la cabecera y el pie de A como base visual y comparte sus recursos. No ejecuta `build_content.py` ni modifica los HTML, los estilos o los enlaces de A. El estado de A previo a B está conservado en el commit `45c741e6c700ad4337d98de71068c8191b9859ae`.
 
-Los cinco testimonios de B fueron proporcionados y confirmados como reales por el cliente. Los nombres fueron proporcionados por el cliente, en el mismo orden de los servicios. Los retratos son imágenes de muestra generadas con IA para presentar el diseño, identificadas en la nota al pie de la sección; no corresponden a las personas citadas. No se inventan fechas, calificaciones ni afiliaciones a plataformas de reseñas.
+Los cinco testimonios de B fueron proporcionados y confirmados como reales por el cliente. Los nombres también fueron proporcionados por el cliente. Los retratos son imágenes de muestra generadas con IA para presentar el diseño, identificadas en la nota al pie de la sección; no corresponden a las personas citadas. No se inventan fechas, calificaciones ni afiliaciones a plataformas de reseñas.
 
 Las propuestas permanecen fuera del índice mientras el cliente decide: A conserva `noindex,nofollow`; B establece `noindex,follow` en su propio generador. Antes de activar la versión definitiva, planificar las rutas canónicas, la indexación y el sitemap. Ver `seo-implementation-notes.txt`.
 
@@ -67,4 +67,4 @@ Las propuestas permanecen fuera del índice mientras el cliente decide: A conser
 
 ## Optimización local de B
 
-`business_profile.json` centraliza dirección, horario y datos profesionales confirmados. `local_content.py` contiene los seis enfoques de servicio, preguntas y fuentes oficiales. `local_sections.py` renderiza ubicación, bloques jurídicos y metadatos. Los datos de credenciales y casos todavía vacíos se omiten. Editar y ejecutar `python build_version_b.py`.
+`business_profile.json` centraliza dirección, horario y datos profesionales confirmados. `local_content.py` contiene los cuatro servicios de B, preguntas y fuentes oficiales. En A y B, las rutas anteriores de reportes y embargos redirigen al servicio combinado. `local_sections.py` renderiza ubicación, bloques jurídicos y metadatos. Los datos de credenciales y casos vacíos se omiten. Editar y ejecutar `python build_version_b.py` para B.

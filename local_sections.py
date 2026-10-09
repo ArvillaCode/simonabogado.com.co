@@ -57,7 +57,7 @@ def related_services(content, services):
     return f'<nav class="related-services section" aria-label="Servicios relacionados"><p class="eyebrow">OTROS ASUNTOS QUE PUEDEN ESTAR RELACIONADOS</p><div>{links}</div></nav>'
 
 def credentials():
-    items = [('Formación jurídica', 'Abogado de la Universidad Libre.'), ('Experiencia', 'Más de cinco años de experiencia, con atención directa en cada etapa del servicio.'), ('Estrategia y comunicación', 'Análisis de documentos, negociación y representación con información clara sobre el avance de tu caso.')]
+    items = [('Formación jurídica', 'Abogado de la Universidad Libre.'), ('Experiencia', 'Más de cinco años de experiencia, con atención directa en cada etapa del servicio.'), ('Áreas de enfoque', 'Experiencia especializada en asuntos de familia y finanzas.'), ('Estrategia y comunicación', 'Análisis, negociación y representación con información clara sobre tu caso.')]
     if PROFILE['professional_card']:
         items.append(('Tarjeta profesional', str(PROFILE['professional_card'])))
     items.extend((x['title'], x['description']) for x in PROFILE['documented_experience'])

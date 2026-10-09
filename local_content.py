@@ -76,3 +76,48 @@ LOCAL_CONTENT = {
   'related': ['contratos-patrimonio', 'recuperacion-cartera']
  }
 }
+
+# El sitio B agrupa deudas, reportes y embargos en una sola página de servicio.
+LOCAL_CONTENT['deudas-insolvencia'].update({
+ 'seo_title': 'Abogado para deudas, reportes y embargos en Medellín',
+ 'description': 'Atención jurídica en Medellín para deudas, reportes crediticios y embargos. Revisión del caso y atención directa con Klende Simón Villa.',
+ 'heading': 'Deudas, reportes y embargos en Medellín',
+ 'context_heading': 'Primero, aclara qué está pasando.',
+ 'context': 'Reviso tus deudas, el reporte o la notificación que recibiste para identificar qué requiere atención.',
+ 'risk': ('Una notificación puede tener plazos', 'Reviso la fecha, el documento y el expediente para explicarte qué necesita respuesta.'),
+ 'options': [('Deudas e insolvencia', 'Organizo tus obligaciones y estudio las opciones que pueden aplicar a tu situación.'), ('Reportes crediticios', 'Reviso la información y tus soportes para valorar una solicitud de corrección o aclaración.'), ('Cobros y embargos', 'Estudio la comunicación, el expediente o la medida y te explico las vías que pueden evaluarse.')],
+ 'faq': [('¿Puedo revisar deudas, reportes o embargos en una misma consulta?', 'Sí. Cuéntame qué ocurre y reviso contigo los documentos relacionados.'), ('¿Se puede borrar un reporte o levantar un embargo?', 'No en todos los casos. Primero estudio los fundamentos y te explico las opciones.'), ('¿Qué documentos necesito?', 'Empieza con lo que tengas: reporte, comprobantes, comunicaciones o notificación.')],
+ 'sources': [('Ley 2445 de 2025 — régimen de insolvencia', 'https://sedeelectronica.sic.gov.co/transparencia/normativa/ley-2445-de-2025'), ('SIC — permanencia del dato negativo', 'https://sedeelectronica.sic.gov.co/publicaciones/boletin-juridico/concepto/permanencia-del-dato-negativo-ley-2157-de-2021')],
+ 'related': ['recuperacion-cartera', 'contratos-patrimonio'],
+})
+LOCAL_CONTENT['recuperacion-cartera'].update({
+ 'seo_title': 'Abogado para cobro de deudas pendientes en Medellín',
+ 'description': 'Reclama un pago pendiente con revisión de soportes y estrategia de cobro. Atención directa de Klende Simón Villa en Medellín.',
+ 'heading': 'Cobro de deudas pendientes en Medellín',
+ 'context_heading': 'Te deben dinero. Aclaremos cómo reclamarlo.',
+ 'context': 'Reviso qué se debe, cuándo debía pagarse y qué documentos respaldan tu reclamación.',
+ 'risk': ('Organiza tus pruebas y fechas', 'Conservar los soportes y acuerdos de pago ayuda a estudiar las opciones antes de avanzar.'),
+ 'options': [('Revisión de soportes', 'Estudio contratos, facturas, pagos y comunicaciones.'), ('Acuerdo o reclamación', 'Te explico las vías disponibles según la deuda y sus documentos.'), ('Alcance claro', 'Conoces los pasos y honorarios antes de contratar.' )],
+ 'faq': [('¿Puedo reclamar sin contrato firmado?', 'Reviso comprobantes, mensajes y otros soportes para valorar qué acreditan.'), ('¿Siempre hay que demandar?', 'No necesariamente. Primero estudio la obligación y las opciones disponibles.'), ('¿Se puede garantizar el pago?', 'No. Te explico los factores y el alcance de la gestión antes de contratar.')],
+ 'related': ['deudas-insolvencia', 'contratos-patrimonio'],
+})
+LOCAL_CONTENT['contratos-patrimonio'].update({
+ 'heading': 'Contratos y patrimonio en Medellín',
+ 'context_heading': 'Antes de firmar, entiende qué acuerdas.',
+ 'context': 'Reviso las obligaciones, pagos, plazos y condiciones del documento.',
+ 'risk': ('Aclara las condiciones antes de firmar', 'Identificar obligaciones y riesgos te ayuda a negociar con mejor información.'),
+ 'options': [('Revisión', 'Identifico pagos, plazos, garantías y condiciones.'), ('Redacción', 'Estructuro el acuerdo según lo que necesitas pactar.'), ('Incumplimiento', 'Reviso lo ocurrido y las opciones que pueden corresponder.')],
+ 'faq': [('¿Puedo consultar antes de firmar?', 'Sí. Reviso el documento y te explico sus puntos clave.'), ('¿Y si ya firmé?', 'Estudio lo acordado y el problema que surgió para definir opciones.')],
+ 'related': ['familia-sucesiones', 'deudas-insolvencia'],
+})
+LOCAL_CONTENT['familia-sucesiones'].update({
+ 'heading': 'Familia y sucesiones en Medellín',
+ 'context_heading': 'Decisiones familiares. Un paso a la vez.',
+ 'context': 'Te escucho, ordeno los asuntos que necesitas resolver y te explico cómo avanzar.',
+ 'risk': ('Define prioridades y acuerdos', 'Organizar tus preguntas y documentos permite estudiar las opciones con claridad.'),
+ 'options': [('Separación y divorcio', 'Reviso los asuntos de pareja, hijos y bienes que necesitan atención.'), ('Alimentos y custodia', 'Organizo prioridades y antecedentes para definir el acompañamiento.'), ('Sucesiones', 'Identifico familiares, bienes y documentos para orientar el trámite.')],
+ 'faq': [('¿Puedo consultar si aún no hay acuerdo?', 'Sí. Revisamos las diferencias y las vías que pueden aplicar.'), ('¿Qué necesito para una sucesión?', 'Cuéntame quiénes están involucrados y qué bienes conocen. Te indico qué documentos reunir.')],
+ 'related': ['contratos-patrimonio', 'deudas-insolvencia'],
+})
+for _obsolete_slug in ('reportes-crediticios', 'embargos-cobros'):
+    LOCAL_CONTENT.pop(_obsolete_slug, None)

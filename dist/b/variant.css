@@ -15,3 +15,5 @@
 @media(max-width:760px){.review-card{width:min(310px,80vw);padding:24px}.review-group{gap:16px;padding-right:16px}.hero h1{font-size:clamp(2.4rem,8.8vw,3.8rem)}}
 @media print{.review-viewport{overflow:visible}.review-track,.review-group{display:block;width:auto}.review-card{width:auto;break-inside:avoid;margin-bottom:20px}.review-group[aria-hidden="true"],.reviews-help{display:none}}
 
+.service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.service-button{width:100%;min-height:54px;margin-top:auto;padding:14px 18px;justify-content:center}.card-copy .service-button{margin-top:auto}
+@media(max-width:760px){.service-grid{grid-template-columns:1fr}}

@@ -61,6 +61,52 @@ SERVICES = [
          cta='Quiero orientación sobre mi familia', close='Un paso claro en un momento sensible.', alt='Tres mujeres de distintas generaciones conversando con una carpeta en la mesa')
 ]
 
+# Tres asuntos del lado de quien enfrenta deudas se presentan como un solo servicio.
+_by_slug = {service['slug']: service for service in SERVICES}
+_debt_service = dict(_by_slug['deudas-insolvencia'])
+_debt_service.update(
+    name='Deudas, reportes y embargos', title='¿Una deuda, un reporte o un embargo te preocupa?',
+    brief='Revisa tus deudas, tu historial crediticio o una notificación y conoce el siguiente paso.',
+    intro='Si las deudas se acumulan, aparece un dato que no reconoces o recibiste una notificación, revisamos tu situación y te explico cómo actuar.',
+    situations=['Necesitas ordenar deudas o evaluar una negociación o insolvencia.', 'Hay un dato incorrecto o una obligación que no reconoces en tu historial.', 'Recibiste un cobro, una demanda o una medida sobre tus bienes.'],
+    outcomes=[('Revisamos tu caso', 'Estudio tus documentos, pagos, reporte o notificación.'), ('Aclaramos tus opciones', 'Te explico qué vías pueden aplicar y qué documentos hacen falta.'), ('Definimos el siguiente paso', 'Conoces el alcance, los honorarios y la gestión que acordemos.')],
+    prepare='Cuéntame qué ocurrió y comparte los documentos que tengas: reporte, comprobantes o notificación. No necesitas tener todo para empezar.',
+    faq=[('¿Debo saber qué servicio necesito?', 'No. Cuéntame qué pasó y organizamos la revisión.'), ('¿Pueden borrar cualquier reporte o levantar un embargo?', 'Cada solicitud depende de sus fundamentos y documentos. Primero estudio el caso y te explico las opciones.'), ('¿Qué hago si recibí una notificación?', 'Guárdala completa y anota cuándo la recibiste. Escríbeme para revisar qué actuación requiere atención.')],
+    cta='Revisar mi caso', close='Aclaremos qué está pasando y cómo puedes actuar.',
+)
+_collection_service = dict(_by_slug['recuperacion-cartera'])
+_collection_service.update(
+    name='Cobro de deudas pendientes', title='¿Te deben dinero y no te pagan?',
+    brief='Revisa las pruebas y define cómo reclamar el pago pendiente.',
+    intro='Si ya cumpliste y el pago no llega, reviso qué respalda la deuda y te explico las vías para reclamarla.',
+    situations=['Te deben por un producto, servicio o préstamo.', 'Has cobrado varias veces y no cumplen el acuerdo.', 'Necesitas valorar una negociación o reclamación formal.'],
+    outcomes=[('Reviso los soportes', 'Estudio contratos, facturas, comprobantes y conversaciones.'), ('Defino la vía', 'Te explico las opciones de acuerdo o reclamación.'), ('Acordamos el alcance', 'Conoces los pasos, costos y condiciones antes de avanzar.')],
+    prepare='Ten a mano el monto pendiente, las fechas y los soportes que tengas. Si hubo abonos o acuerdos, cuéntamelo.',
+    faq=[('¿Puedo reclamar sin contrato firmado?', 'Reviso comprobantes, mensajes y otros soportes para valorar qué acreditan.'), ('¿Siempre hay que demandar?', 'No necesariamente. Primero estudio la obligación y las opciones disponibles.'), ('¿Se puede garantizar el pago?', 'No. Te explico los factores y el alcance de la gestión antes de contratar.')],
+    cta='Reclamar un pago pendiente', close='Dale rumbo a tu reclamación.',
+)
+_contract_service = dict(_by_slug['contratos-patrimonio'])
+_contract_service.update(
+    title='¿Vas a firmar o proteger un bien?', brief='Revisa contratos y acuerdos antes de asumir compromisos.',
+    intro='Antes de firmar, entiende tus obligaciones, los riesgos y las condiciones del acuerdo.',
+    situations=['Vas a firmar y algo no te queda claro.', 'Necesitas redactar o negociar un acuerdo.', 'Ya firmaste y surgió un incumplimiento.'],
+    outcomes=[('Reviso el documento', 'Identifico obligaciones, pagos, plazos y condiciones.'), ('Te explico los riesgos', 'Señalo qué conviene aclarar o negociar.'), ('Acordamos los ajustes', 'Definimos la revisión, redacción o gestión que necesitas.')],
+    prepare='Comparte el contrato completo y cuéntame qué quieres lograr o qué te preocupa.',
+    faq=[('¿Puedo consultar antes de firmar?', 'Sí. Reviso el documento y te explico sus puntos clave.'), ('¿Y si ya firmé?', 'Estudio lo acordado y el problema que surgió para definir opciones.')],
+    cta='Revisar mi contrato', close='Firma con claridad sobre lo que acuerdas.',
+)
+_family_service = dict(_by_slug['familia-sucesiones'])
+_family_service.update(
+    title='¿Un asunto familiar necesita una solución?', brief='Orientación y representación para asuntos de familia y sucesiones.',
+    intro='Te escucho, ordeno lo que necesitas resolver y te explico cómo avanzar con sensibilidad y discreción.',
+    situations=['Estás considerando una separación o un divorcio.', 'Necesitas resolver alimentos, custodia o acuerdos sobre tus hijos.', 'Debes iniciar una sucesión.'],
+    outcomes=[('Te escucho', 'Aclaro tus prioridades y los temas que requieren atención.'), ('Reviso las opciones', 'Estudio documentos, acuerdos y diferencias.'), ('Te acompaño', 'Definimos las actuaciones y el alcance del servicio.')],
+    prepare='Cuéntame qué ocurre y comparte los acuerdos o documentos que ya tienes.',
+    faq=[('¿Puedo consultar si aún no hay acuerdo?', 'Sí. Revisamos las diferencias y las vías que pueden aplicar.'), ('¿Qué necesito para una sucesión?', 'Cuéntame quiénes están involucrados y qué bienes conocen. Te indico qué documentos reunir.')],
+    cta='Hablar de mi situación familiar', close='Hablemos con claridad y discreción.',
+)
+SERVICES = [_debt_service, _collection_service, _contract_service, _family_service]
+
 def wa(url, label, cls='button gold'):
     return f'<a class="{cls}" href="{url}" target="_blank" rel="noopener noreferrer">{label}</a>'
 
@@ -84,28 +130,34 @@ def steps(items):
 cards=[]
 for s in SERVICES:
     route=f'servicios/{s["slug"]}/'
-    cards.append(f'''<article class="service-card"><a class="service-cover" href="{route}" aria-label="Conocer el servicio de {s['name'].lower()}"><img src="assets/servicios/{s['image']}.webp" alt="{s['alt']}" width="1536" height="1024" loading="lazy" decoding="async"></a><div class="card-copy"><p class="card-label">{s['name'].upper()}</p><h3>{s['title']}</h3><p>{s['brief']}</p><a class="text-link" href="{route}" aria-label="Conocer el servicio de {s['name'].lower()}">Conocer este servicio <span aria-hidden="true">↗</span></a></div></article>''')
+    cards.append(f'''<article class="service-card"><a class="service-cover" href="{route}" aria-label="Conocer el servicio de {s['name'].lower()}"><img src="assets/servicios/{s['image']}.webp" alt="{s['alt']}" width="1536" height="1024" loading="lazy" decoding="async"></a><div class="card-copy"><p class="card-label">{s['name'].upper()}</p><h3>{s['title']}</h3><p>{s['brief']}</p><a class="button navy service-button" href="{route}" aria-label="Conocer el servicio de {s['name'].lower()}">Ver cómo puedo ayudarte</a></div></article>''')
 
-home=head('Tu tranquilidad merece un camino claro', '¿Deudas, cobros, contratos o una situación familiar? Encuentra orientación jurídica directa con Klende Simon Villa para entender tus opciones y decidir cómo avanzar.')+f'''
-<main id="contenido"><section class="hero" id="inicio"><div class="hero-copy"><p class="eyebrow light">ORIENTACIÓN JURÍDICA PARA TU SIGUIENTE PASO</p><h1>Tu tranquilidad<br>merece un<br><em>camino claro.</em></h1><p class="hero-intro">Una deuda que no te deja dormir. Un pago que no llega. Una decisión que afecta a tu familia. No tienes que resolver todas tus dudas a solas: entiende tus opciones y decide cómo avanzar.</p>{wa(GENERAL,'Quiero contar mi situación')}<div class="hero-note"><span class="short-line" aria-hidden="true"></span><p>Habla directamente con Klende Simon Villa.<br>Empecemos por lo que hoy te preocupa.</p></div></div><figure class="portrait"><img src="assets/simon.jpg" alt="Klende Simon Villa, abogado" width="1086" height="1448" fetchpriority="high"><figcaption><span>Tu historia merece ser escuchada.</span><small>KLENDE SIMON VILLA · ABOGADO</small></figcaption></figure></section>
+home=head('Abogado en Medellín · familia y finanzas', 'Atención jurídica en Medellín para asuntos de familia, finanzas, deudas y contratos. Habla directamente con Klende Simón Villa.')+f'''
+<main id="contenido"><section class="hero" id="inicio"><div class="hero-copy"><p class="eyebrow light">MÁS DE 5 AÑOS DE EXPERIENCIA · FAMILIA Y FINANZAS</p><h1>Tu problema merece<br><em>una respuesta clara.</em></h1><p class="hero-intro">¿Una deuda, una notificación o un conflicto familiar? Te explico tus opciones y el siguiente paso.</p>{wa(GENERAL,'Cuéntame qué ocurre')}<div class="hero-note"><span class="short-line" aria-hidden="true"></span><p>Atención directa de Klende Simon Villa.<br>Empecemos por lo que hoy te preocupa.</p></div></div><figure class="portrait"><img src="assets/simon.jpg" alt="Klende Simon Villa, abogado" width="1086" height="1448" fetchpriority="high"><figcaption><span>Experiencia en familia y finanzas.</span><small>KLENDE SIMON VILLA · ABOGADO</small></figcaption></figure></section>
 <div class="principles" aria-label="Lo que puedes esperar"><span>Tu situación, escuchada con atención</span><span>Tus opciones, explicadas con claridad</span><span>Tu siguiente paso, con orientación</span></div>
-<section class="section services" id="servicios"><div class="section-heading"><div><p class="eyebrow">EMPIEZA POR LO QUE TE PREOCUPA</p><h2>¿Qué necesitas<br>resolver hoy?</h2></div><p>Encuentra la situación que más se parece a la tuya. Conoce cómo podemos abordarla y qué información ayuda a dar el primer paso.</p></div><div class="service-grid">{''.join(cards)}</div><div class="service-footer"><p>¿No sabes en qué servicio encaja tu situación?</p>{wa(GENERAL,'Cuéntamela y la revisamos','text-link')}</div></section>
-<section class="approach section" id="simon"><div class="approach-statement"><p class="eyebrow">QUIÉN TE ACOMPAÑA</p><h2>Que te escuchen.<br>Que te expliquen.<br>Que puedas <em>decidir.</em></h2><p class="signature">Klende Simon Villa</p><span class="signature-caption">TU ABOGADO · ATENCIÓN DIRECTA</span></div><div class="approach-copy"><p class="lead">Experiencia que inspira confianza. Claridad para actuar.</p><p>Soy <strong>Klende Simon Villa</strong>, abogado con <strong>más de cinco años de experiencia</strong>. Sé que detrás de una consulta hay algo que quieres proteger: tu tranquilidad, tu familia o el patrimonio que has construido con esfuerzo.</p><p>Mi trabajo combina <strong>análisis jurídico, capacidad de negociación y atención al detalle</strong> para estudiar tu situación, identificar alternativas y ayudarte a tomar decisiones informadas. Te explico lo que necesitas saber con claridad, para que comprendas tus opciones y el propósito de cada paso.</p><p>Encontrarás <strong>escucha, trato cercano y atención directa</strong>. Desde el comienzo hablaremos de las posibilidades de tu caso, las dificultades que debemos considerar y cómo puedo acompañarte.</p><p>Quiero que tengas la tranquilidad de sentirte acompañado, la confianza de entender tus decisiones y una ruta clara para actuar.</p><div class="commitment">Compromiso que garantiza tu confianza.</div></div></section>
-<section class="process section" id="proceso"><div class="section-heading"><div><p class="eyebrow">EL OBJETIVO DE REVISAR TU CASO</p><h2>Avanza con<br>tres cosas claras.</h2></div><p>No necesitas conocer el lenguaje jurídico para empezar. La revisión busca ayudarte a responder estas tres preguntas.</p></div>{steps([('¿Qué opciones tengo?', 'Entender las alternativas que podrían aplicar a tu situación y los aspectos que conviene evaluar.'),('¿Qué necesito reunir?', 'Identificar los documentos y la información necesarios para estudiar el caso y sustentar el siguiente paso.'),('¿Cómo puedo avanzar?', 'Conocer el alcance del acompañamiento, sus costos y los pasos propuestos para tomar una decisión informada.')])}</section>
-<section class="questions section"><div><p class="eyebrow">ANTES DE DAR EL PRIMER PASO</p><h2>Resolvamos<br>tus primeras dudas.</h2></div>{faqs([('¿Necesito saber qué trámite me corresponde?', 'No. Empieza por contar qué ocurre y qué necesitas resolver. La revisión permite identificar el asunto y la información que hace falta.'),('¿Qué sucede cuando escribo por WhatsApp?', 'Puedes explicar brevemente tu situación e indicar el servicio que te interesa. A partir de ahí coordinamos cómo revisar tu caso y te informamos las condiciones de la asesoría.'),('¿Cuánto cuesta el acompañamiento?', 'Depende del servicio y del alcance que requiera tu caso. Los honorarios y las condiciones se explican antes de contratar para que puedas decidir con esa información.'),('¿Y si todavía no tengo todos los documentos?', 'Puedes empezar con una explicación de lo que pasa y los documentos que ya tienes. Después identificamos qué información adicional se necesita.'),('¿Pueden garantizarme un resultado?', 'Cada caso tiene condiciones propias. El compromiso es estudiar tu situación, explicarte las opciones y definir un acompañamiento claro; el resultado de un proceso no se puede asegurar de antemano.')])}</section>
-<section class="contact" id="consulta"><p class="eyebrow light">TU PRIMER PASO PUEDE SER UNA CONVERSACIÓN</p><h2>Deja de darle vueltas.<br><em>Empieza por entender.</em></h2><p>Cuéntame qué está pasando y qué necesitas resolver. Organicemos tus dudas para decidir el siguiente paso.</p>{wa(GENERAL,'Quiero hablar con Klende Simon Villa')}<span class="contact-note">Por WhatsApp · Atención directa · Condiciones claras antes de contratar</span></section></main>'''+footer()
-(ROOT/'index.html').write_text(home,encoding='utf-8')
+<section class="section services" id="servicios"><div class="section-heading"><div><p class="eyebrow">SERVICIOS JURÍDICOS</p><h2>¿Qué necesitas resolver?</h2></div><p>Elige el asunto que te preocupa. Si no sabes cuál es, cuéntamelo.</p></div><div class="service-grid">{''.join(cards)}</div><div class="service-footer"><p>¿No encuentras tu situación?</p>{wa(GENERAL,'Cuéntame qué pasa','button navy service-button')}</div></section>
+<section class="approach section" id="simon"><div class="approach-statement"><p class="eyebrow">EXPERIENCIA Y ATENCIÓN DIRECTA</p><h2>Familia y finanzas.<br>Una ruta clara<br><em>para avanzar.</em></h2><p class="signature">Klende Simon Villa</p><span class="signature-caption">ABOGADO · MÁS DE CINCO AÑOS DE EXPERIENCIA</span></div><div class="approach-copy"><p class="lead">Experiencia enfocada en lo que necesitas proteger.</p><p>Soy <strong>Klende Simon Villa</strong>, abogado con más de cinco años de experiencia y práctica especializada en asuntos de <strong>familia y finanzas</strong>.</p><p>Reviso tu caso, te explico tus opciones y definimos el siguiente paso. Hablas directamente conmigo y conoces el alcance y los honorarios antes de contratar.</p><div class="commitment">Atención clara, directa y cercana.</div></div></section>
+<section class="questions section"><div><p class="eyebrow">ANTES DE EMPEZAR</p><h2>Respuestas rápidas.</h2></div>{faqs([('¿Tengo que saber qué servicio necesito?', 'No. Cuéntame qué está pasando y te ayudo a identificar por dónde empezar.'),('¿Qué documentos debo enviar?', 'Empieza por explicar tu situación y compartir lo que ya tienes. Te indicaré si hace falta algo más.'),('¿Cuánto cuesta la asesoría?', 'Depende del servicio. Conocerás el alcance y los honorarios antes de contratar.')])}</section>
+<section class="contact" id="consulta"><p class="eyebrow light">TU SIGUIENTE PASO</p><h2>Cuéntame qué necesitas resolver.</h2><p>Te explico cómo empezar y qué información hace falta.</p>{wa(GENERAL,'Hablar con Klende por WhatsApp')}<span class="contact-note">Atención directa · Honorarios claros antes de contratar</span></section></main>'''+footer()
+(ROOT/'index.html').write_text(home,encoding='utf-8',newline='\n')
 
 for s in SERVICES:
     base='../../'
     url='https://wa.link/'+s['wa']
     page=head(s['name'],s['brief'],base)+f'''<main id="contenido"><section class="detail-hero"><div class="detail-intro"><a class="back-link" href="../../#servicios">← Explorar todos los servicios</a><p class="eyebrow light">{s['name'].upper()}</p><h1>{s['title']}</h1><p>{s['intro']}</p>{wa(url,s['cta'])}</div><figure class="detail-image"><img src="../../assets/servicios/{s['image']}.webp" alt="{s['alt']}" width="1536" height="1024" fetchpriority="high"></figure></section>
-<section class="section detail-context"><div><p class="eyebrow">TU SITUACIÓN ES EL PUNTO DE PARTIDA</p><h2>Tal vez esto se parece<br>a lo que estás viviendo.</h2><p class="intro-text">No necesitas tener todas las respuestas. Empezamos por entender el problema que quieres resolver.</p></div><ul class="situation-list">{''.join('<li>'+v+'</li>' for v in s['situations'])}</ul></section>
-<section class="section detail-outcomes"><div class="section-heading"><div><p class="eyebrow">CÓMO PUEDE AYUDARTE LA REVISIÓN</p><h2>Tres puntos para<br>decidir con claridad.</h2></div><p>Con atención directa de Klende Simon Villa, explicaciones comprensibles y un alcance definido según tu caso.</p></div>{steps(s['outcomes'])}<p class="scope-note">Las alternativas y la viabilidad de cualquier actuación dependen de los documentos y las condiciones de tu situación.</p></section>
-<section class="section prepare"><div><p class="eyebrow">PREPARA LA PRIMERA CONVERSACIÓN</p><h2>Empieza con<br>lo que ya sabes.</h2></div><div class="prepare-copy"><p>{s['prepare']}</p><p>Antes de contratar, conocerás el alcance del servicio, los honorarios y las condiciones del acompañamiento.</p>{wa(url,s['cta'],'text-link')}</div></section>
-<section class="questions section"><div><p class="eyebrow">DUDAS SOBRE ESTE SERVICIO</p><h2>Lo que quizá<br>te estás preguntando.</h2></div>{faqs(s['faq'])}</section>
-<section class="contact detail-contact"><p class="eyebrow light">HABLEMOS DE TU SITUACIÓN</p><h2>{s['close']}</h2><p>No hace falta que sepas por dónde empezar. Cuéntame qué ocurre y qué te gustaría aclarar.</p>{wa(url,s['cta'])}<span class="contact-note">Habla directamente con Klende Simon Villa · Cuéntame qué necesitas resolver</span><a class="other-service" href="../../#servicios">Explorar otro servicio</a></section></main>'''+footer(base,url)
+<section class="section detail-context"><div><p class="eyebrow">EMPECEMOS POR LO QUE TE PREOCUPA</p><h2>¿Te pasa algo de esto?</h2><p class="intro-text">No necesitas conocer el trámite. Cuéntame qué ocurrió.</p></div><ul class="situation-list">{''.join('<li>'+v+'</li>' for v in s['situations'])}</ul></section>
+<section class="section detail-outcomes"><div class="section-heading"><div><p class="eyebrow">ASÍ PUEDO AYUDARTE</p><h2>Reviso. Te explico. Actuamos.</h2></div><p>Con atención directa y un alcance claro para tu caso.</p></div>{steps(s['outcomes'])}</section>
+<section class="section prepare"><div><p class="eyebrow">PRIMER PASO</p><h2>Empieza con lo que tienes.</h2></div><div class="prepare-copy"><p>{s['prepare']}</p><p>Conocerás el alcance y los honorarios antes de contratar.</p>{wa(url,s['cta'],'button navy')}</div></section>
+<section class="questions section"><div><p class="eyebrow">RESPUESTAS RÁPIDAS</p><h2>Lo esencial para empezar.</h2></div>{faqs(s['faq'])}</section>
+<section class="contact detail-contact"><p class="eyebrow light">ATENCIÓN DIRECTA</p><h2>{s['close']}</h2><p>Cuéntame qué ocurre. Te explico cómo empezar.</p>{wa(url,s['cta'])}<span class="contact-note">Hablas directamente con Klende Simon Villa</span><a class="other-service" href="../../#servicios">Ver los otros servicios</a></section></main>'''+footer(base,url)
     folder=ROOT/'servicios'/s['slug']
     folder.mkdir(parents=True,exist_ok=True)
-    (folder/'index.html').write_text(page,encoding='utf-8')
-print('Contenido generado: inicio y seis páginas de servicios.')
+    (folder/'index.html').write_text(page,encoding='utf-8',newline='\n')
+
+redirect = '''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,follow"><link rel="canonical" href="../deudas-insolvencia/"><meta http-equiv="refresh" content="0;url=../deudas-insolvencia/"><title>Servicio actualizado · Simón Abogado</title></head><body><p>Este servicio ahora forma parte de <a href="../deudas-insolvencia/">Deudas, reportes y embargos</a>.</p></body></html>'''
+for old_slug in ('reportes-crediticios', 'embargos-cobros'):
+    folder = ROOT / 'servicios' / old_slug
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / 'index.html').write_text(redirect, encoding='utf-8', newline='\n')
+
+print('Contenido generado: inicio y cuatro páginas de servicios.')
