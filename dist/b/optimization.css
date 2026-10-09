@@ -55,7 +55,7 @@
 .footer-location a{justify-self:start;color:#e6cea3;text-decoration:underline;text-underline-offset:4px;min-height:36px;padding-top:6px}
 .header nav{gap:22px}
 .header .brand{width:225px}
-.review-card figcaption{min-height:108px}
+.review-card figcaption{min-height:80px}
 @media(max-width:1100px){.header nav{gap:14px}.header .brand{width:195px}.nav-cta{padding:12px 14px}.location{gap:34px}.legal-options{gap:22px}}
 @media(max-width:760px){.hero-copy{padding:42px 24px}.hero h1{font-size:clamp(2.5rem,9.3vw,3.8rem)}.hero-actions{align-items:stretch;flex-direction:column}.hero-actions .button{width:100%}.hero-note{margin-top:24px}.portrait{height:470px}.detail-image{aspect-ratio:3/2;min-height:0}.detail-intro .detail-promise{font-size:1.15rem}.legal-options,.location,.related-services>div{grid-template-columns:1fr}.legal-options{gap:28px}.risk-note{padding:22px}.location-card{padding:25px}.location-actions{align-items:stretch;flex-direction:column}.location-actions .text-link{align-self:flex-start}.section-action{gap:16px}.section-action .button{max-width:100%}.header .brand{width:190px}.footer-location{font-size:.75rem}.breadcrumbs{margin-bottom:24px}.hero-copy .contact-expectation{font-size:.78rem}}
 @media print{.hero-actions,.location-actions,.section-action,.related-services{display:none}.legal-options,.location{display:block}.legal-options article,.location-card{break-inside:avoid}.detail-image>img{position:static}}

@@ -52,7 +52,7 @@ Ambas versiones comparten el mismo proyecto de Vercel y el mismo dominio: no req
 
 Para editar B, modificar `build_version_b.py` y ejecutar `python build_version_b.py`. Este generador escribe únicamente dentro de `dist/b/`, reutiliza la cabecera y el pie de A como base visual y comparte sus recursos. No ejecuta `build_content.py` ni modifica los HTML, los estilos o los enlaces de A. El estado de A previo a B está conservado en el commit `45c741e6c700ad4337d98de71068c8191b9859ae`.
 
-Los cinco testimonios de B fueron proporcionados y confirmados como reales por el cliente. Los nombres fueron proporcionados por el cliente, en el mismo orden de los servicios. Los retratos son imágenes de muestra generadas con IA para presentar el diseño, identificadas en cada tarjeta; no corresponden a las personas citadas. No se inventan fechas, calificaciones ni afiliaciones a plataformas de reseñas.
+Los cinco testimonios de B fueron proporcionados y confirmados como reales por el cliente. Los nombres fueron proporcionados por el cliente, en el mismo orden de los servicios. Los retratos son imágenes de muestra generadas con IA para presentar el diseño, identificadas en la nota al pie de la sección; no corresponden a las personas citadas. No se inventan fechas, calificaciones ni afiliaciones a plataformas de reseñas.
 
 Las propuestas permanecen fuera del índice mientras el cliente decide: A conserva `noindex,nofollow`; B establece `noindex,follow` en su propio generador. Antes de activar la versión definitiva, planificar las rutas canónicas, la indexación y el sitemap. Ver `seo-implementation-notes.txt`.
 
