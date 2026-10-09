@@ -46,9 +46,13 @@ El archivo `CNAME` de la raíz proviene de la configuración anterior de GitHub 
 
 ## Versiones A y B
 
-Por ahora solo está implementada la versión A. Se propone conservarla en `https://simonabogado.com.co/` y crear la alternativa en `https://simonabogado.com.co/b/`. La ruta `/b/` aún no existe.
+La versión A se conserva en `/` y la versión B está en `/b/`, con seis páginas internas propias y siete enlaces de WhatsApp independientes. En el dominio de Vercel se accede a ambas rutas; cuando se conecte el dominio propio, serán `https://simonabogado.com.co/` y `https://simonabogado.com.co/b/`.
 
-Ambas versiones pueden compartir el mismo proyecto de Vercel y el mismo dominio: no requieren DNS separados. Cada versión deberá mantener sus propios enlaces de navegación y páginas de servicio; por ejemplo, `/servicios/deudas-insolvencia/` para A y `/b/servicios/deudas-insolvencia/` para B. Tener dos rutas permite presentar ambas opciones; una prueba A/B con reparto de visitantes y medición de conversiones se configura por separado.
+Ambas versiones comparten el mismo proyecto de Vercel y el mismo dominio: no requieren DNS separados. Cada versión mantiene sus propios enlaces de navegación y páginas de servicio; por ejemplo, `/servicios/deudas-insolvencia/` para A y `/b/servicios/deudas-insolvencia/` para B. Tener dos rutas permite presentar ambas opciones; una prueba A/B con reparto de visitantes y medición de conversiones se configura por separado.
+
+Para editar B, modificar `build_version_b.py` y ejecutar `python build_version_b.py`. Este generador escribe únicamente dentro de `dist/b/`, reutiliza la cabecera y el pie de A como base visual y comparte sus recursos. No ejecuta `build_content.py` ni modifica los HTML, los estilos o los enlaces de A. El estado de A previo a B está conservado en el commit `45c741e6c700ad4337d98de71068c8191b9859ae`.
+
+Los cinco testimonios de B fueron proporcionados y confirmados como reales por el cliente. Se muestran por servicio sin inventar nombres, fechas, calificaciones ni afiliación a plataformas de reseñas.
 
 La propuesta conserva `noindex,nofollow` mientras el cliente decide su versión final. Antes del lanzamiento para buscadores, retirar esa etiqueta desde `build_content.py`, regenerar las páginas y publicar.
 

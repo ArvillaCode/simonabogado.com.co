@@ -1,0 +1,130 @@
+"""Genera exclusivamente dist/b/. Conserva intacta la versión A y sus recursos."""
+from pathlib import Path
+from html import escape
+import re
+
+DIST = Path(__file__).parent / 'dist'
+OUT = DIST / 'b'
+GENERAL = 'https://wa.link/2dj89b'
+SOURCE = (DIST / 'index.html').read_text(encoding='utf-8')
+
+SERVICES = [
+ dict(slug='deudas-insolvencia',name='Deudas e insolvencia',image='01-deudas-insolvencia',wa='fyr063',
+ title='Las deudas pesan. Enfréntalas con una estrategia.',
+ brief='Estudio tus obligaciones y tu capacidad de pago para definir contigo cómo abordar tu situación.',
+ intro='Trabajas, pagas y aun así las cuentas siguen acumulándose. Las llamadas de cobro ocupan tu día y las preocupaciones llegan contigo a casa. Pongo tu situación sobre la mesa, reviso tus obligaciones y defino una estrategia para actuar.',
+ situations=['Tus pagos mensuales están superando lo que puedes asumir.', 'Debes a varios acreedores y necesitas organizar tus obligaciones.', 'Quieres estudiar una negociación o un proceso de insolvencia con acompañamiento jurídico.'],
+ steps=[('Estudio tu situación','Reviso tus deudas, ingresos, pagos y documentos para identificar el punto de partida.'),('Defino la estrategia','Analizo las vías de negociación y los requisitos de una posible insolvencia. Te explico el camino propuesto y lo que implica.'),('Te acompaño al actuar','Adelanto las gestiones acordadas, atiendo tus preguntas y te mantengo informado durante el servicio.')],
+ prepare='Cuéntame cuánto debes, a quiénes y qué pagos estás realizando. Reúne los estados de cuenta, las comunicaciones de cobro y la información sobre tus ingresos. Te indicaré qué documentos adicionales necesito.',
+ faq=[('¿Puedo consultar antes de dejar de pagar?','Sí. Estudio tu situación actual y tus compromisos para definir cómo abordar las dificultades que estás enfrentando.'),('¿Cómo sé si la insolvencia corresponde a mi caso?','Reviso tus obligaciones y las condiciones de tu situación. Con ese análisis te explico si cumples los requisitos y qué implicaría avanzar por esa vía.'),('¿Qué pasa si me faltan documentos?','Empieza por contarme lo que ocurre. Organizo contigo la información y te indico qué soportes hacen falta.')],
+ cta='Necesito ayuda con mis deudas',close='Da el primer paso para enfrentar tus deudas.'),
+ dict(slug='reportes-crediticios',name='Reportes crediticios',image='02-reportes-crediticios',wa='ss6ua4',
+ title='Tu reporte crediticio merece una revisión a fondo.',
+ brief='Reviso la información reportada, identifico inconsistencias y fundamento las reclamaciones que correspondan.',
+ intro='Necesitas avanzar, pero aparece una obligación que no reconoces o un dato que no refleja lo ocurrido. Las respuestas de la entidad no resuelven tus dudas. Reviso los antecedentes y sustento las solicitudes que correspondan con documentos y argumentos.',
+ situations=['Aparece una obligación que no reconoces en tu historial.', 'Realizaste un pago y necesitas aclarar la información que sigue reportada.', 'Has solicitado explicaciones y necesitas respaldo jurídico para continuar la reclamación.'],
+ steps=[('Reviso el reporte','Estudio la información de la obligación, sus antecedentes y las comunicaciones de la entidad.'),('Fundamento la reclamación','Identifico las inconsistencias y organizo los soportes para las solicitudes que correspondan.'),('Doy seguimiento','Adelanto la gestión acordada, reviso las respuestas y te explico el siguiente paso.')],
+ prepare='Reúne el reporte, los comprobantes de pago y las respuestas que hayas recibido. Cuéntame qué dato cuestionas. Para revisar tu caso no necesito tus contraseñas ni códigos de acceso.',
+ faq=[('¿Puedo consultar si no reconozco la deuda?','Sí. Reviso el reporte y las comunicaciones para identificar qué antecedentes deben solicitarse y qué actuación corresponde.'),('¿También revisas reportes después de un pago?','Sí. Estudio el comprobante, la información reportada y la respuesta de la entidad para definir la gestión.'),('¿La gestión incluye solicitar un crédito?','Mi servicio se centra en revisar la información y tramitar las reclamaciones acordadas. La evaluación de una solicitud de crédito corresponde a la entidad financiera.')],
+ cta='Quiero revisar mi reporte',close='Actúa sobre la información que te está afectando.'),
+ dict(slug='embargos-cobros',name='Embargos y cobros',image='03-embargos-cobros',wa='0nro66',
+ title='Recibiste una notificación. Responde con respaldo jurídico.',
+ brief='Reviso el proceso, defino las actuaciones y asumo la representación acordada para defender tus intereses.',
+ intro='Piensas en tu sueldo, tu cuenta o los bienes que has construido con esfuerzo. Leer una notificación sin entender qué sigue aumenta la preocupación. Estudio el documento y el expediente, identifico lo que requiere atención y defino la estrategia de defensa.',
+ situations=['Recibiste una notificación de cobro o de un proceso judicial.', 'Existe una medida sobre tus ingresos o tus bienes que necesitas revisar.', 'Necesitas un abogado que estudie el expediente y asuma tu representación.'],
+ steps=[('Estudio el expediente','Reviso los documentos, los antecedentes de la obligación y el estado del proceso.'),('Defino la respuesta','Identifico las actuaciones que corresponden, sus requisitos y los puntos que requieren atención.'),('Asumo la gestión','Adelanto las actuaciones contratadas y te mantengo informado sobre los avances del caso.')],
+ prepare='Envíame una explicación de lo ocurrido y ten a mano la notificación completa, la fecha en que la recibiste y el número del proceso si lo conoces. Te indicaré cómo compartir los documentos necesarios.',
+ faq=[('¿Qué hago si no entiendo la notificación?','Cuéntame cuándo la recibiste y comparte el documento completo por el medio que acordemos. Lo reviso y te explico su alcance.'),('¿Puedes revisar un proceso que ya está en curso?','Sí. Estudio el expediente y las actuaciones realizadas para definir el alcance de mi intervención.'),('¿Cómo me informarás sobre el caso?','Te explico las actuaciones, los avances y la información que necesito de ti durante la representación acordada.')],
+ cta='Quiero revisar esta notificación',close='Enfrenta el proceso con una defensa organizada.'),
+ dict(slug='recuperacion-cartera',name='Recuperación de cartera',image='04-recuperacion-cartera',wa='l2mzg4',
+ title='Te deben dinero. Es momento de exigir el pago.',
+ brief='Reviso las pruebas, estructuro la reclamación y dirijo la gestión de cobro para defender tu derecho al pago.',
+ intro='Has insistido, has esperado y sigues recibiendo excusas. Mientras tanto, tus obligaciones continúan. Las promesas de pago no cubren tus gastos ni sostienen tu negocio. Reviso las pruebas que respaldan la deuda y estructuro una reclamación para defender tu derecho al pago.',
+ situations=['Entregaste un producto o prestaste un servicio y aún no te pagan.', 'Prestaste dinero y los compromisos de pago siguen sin cumplirse.', 'Has intentado cobrar y necesitas darle respaldo jurídico a tu reclamación.'],
+ steps=[('Estudio las pruebas','Reviso contratos, facturas, comprobantes y conversaciones relacionados con la deuda.'),('Defino la estrategia de cobro','Te explico las actuaciones que propongo, el alcance de la gestión y los costos del acompañamiento.'),('Dirijo la reclamación','Adelanto las actuaciones acordadas y te mantengo informado sobre los avances y las decisiones del caso.')],
+ prepare='Reúne los soportes de la deuda, el monto pendiente, las fechas acordadas y las comunicaciones con quien te debe. Indícame si hubo abonos o acuerdos posteriores para organizar la reclamación.',
+ faq=[('¿Puedo consultar sin un contrato firmado?','Sí. Reviso los documentos, comprobantes y comunicaciones que tengas para determinar qué respaldan y cómo estructurar la gestión.'),('¿La gestión siempre empieza con una demanda?','Primero estudio la obligación y sus soportes. Defino la estrategia de cobro y te explico las vías de acuerdo o reclamación que corresponden.'),('¿Cómo conoceré el avance del cobro?','Te mantengo informado sobre las actuaciones realizadas, las respuestas recibidas y los pasos que siguen dentro del servicio contratado.')],
+ cta='Quiero reclamar mi dinero',close='Dale respaldo jurídico a tu reclamación.'),
+ dict(slug='contratos-patrimonio',name='Contratos y patrimonio',image='05-contratos-patrimonio',wa='j3wo34',
+ title='Lo que has construido merece una firma bien respaldada.',
+ brief='Reviso las condiciones, detecto riesgos y estructuro acuerdos que defiendan tus intereses.',
+ intro='Una cláusula que pasaste por alto puede comprometer más de lo que imaginabas. Tu dinero, tus bienes y tus compromisos merecen una revisión cuidadosa. Estudio el documento, te explico las obligaciones y planteo los ajustes necesarios antes de que decidas.',
+ situations=['Vas a firmar un contrato que compromete tu dinero o tus bienes.', 'Necesitas dejar por escrito las condiciones de un acuerdo.', 'Ya firmaste y tienes una dificultad con los compromisos asumidos.'],
+ steps=[('Reviso las condiciones','Estudio el contrato, los anexos y el propósito de la operación.'),('Identifico los puntos decisivos','Te explico las obligaciones, los riesgos y las condiciones que deben aclararse.'),('Estructuro el acuerdo','Redacto o propongo los ajustes contratados y te acompaño en la revisión de los compromisos.')],
+ prepare='Ten a mano el contrato completo y sus anexos. Cuéntame qué quieres lograr, qué te preocupa y en qué momento se encuentra la negociación o la operación.',
+ faq=[('¿Puedes elaborar un contrato desde cero?','Sí. Estudio el acuerdo que necesitas, reúno la información y defino contigo el alcance de su elaboración.'),('¿Puedo consultar si ya firmé?','Sí. Reviso lo que acordaste y la dificultad concreta para explicarte las actuaciones que corresponden.'),('¿También revisas cambios que propone la otra parte?','Sí. Dentro del alcance acordado, estudio las modificaciones y te explico cómo afectan tus compromisos e intereses.')],
+ cta='Quiero revisar mi contrato',close='Firma con conocimiento de lo que estás acordando.'),
+ dict(slug='familia-sucesiones',name='Familia y sucesiones',image='06-familia-sucesiones',wa='ikk5zu',
+ title='En los momentos difíciles, defiendo lo que importa para ti.',
+ brief='Te escucho, organizo los asuntos jurídicos y te represento con firmeza, sensibilidad y discreción.',
+ intro='Un conflicto familiar ocupa tu cabeza incluso cuando intentas concentrarte en otra cosa. Se mezclan las emociones, las decisiones sobre tus hijos y las preocupaciones por los bienes. Escucho tus prioridades, estudio la situación y te acompaño para actuar con una dirección clara.',
+ situations=['Necesitas acompañamiento para una separación o un divorcio.', 'Debes resolver asuntos de alimentos, custodia o acuerdos sobre tus hijos.', 'Tras el fallecimiento de un familiar, necesitas avanzar con una sucesión.'],
+ steps=[('Escucho tus prioridades','Entiendo qué ocurre, qué necesitas resolver y qué asuntos requieren atención.'),('Organizo la estrategia','Reviso documentos, acuerdos y diferencias para definir las actuaciones.'),('Te represento y acompaño','Adelanto la gestión contratada, manejo el asunto con discreción y te mantengo informado.')],
+ prepare='Cuéntame qué está ocurriendo y qué necesitas resolver. Reúne los acuerdos anteriores y los documentos que tengas. Yo te indico qué información es relevante para estudiar tu situación.',
+ faq=[('¿Puedo consultar si todavía no hay un acuerdo?','Sí. Estudio tu situación y las diferencias existentes para definir las vías de actuación y los puntos que requieren atención.'),('¿Puedes abordar asuntos de hijos y bienes en una misma consulta?','Sí. Identifico los temas relacionados y organizo la revisión para definir el alcance del acompañamiento.'),('¿Cómo empezamos una consulta sobre sucesión?','Cuéntame quién falleció, qué familiares están involucrados y qué bienes conocen. Te explico qué documentos necesito y cómo organizar la revisión.')],
+ cta='Quiero hablar de mi situación familiar',close='Cuenta conmigo para afrontar este momento.')
+]
+
+TESTIMONIALS = [
+ ('Recuperación de cartera','Cada vez que cobraba me daban una excusa distinta. Klende revisó los soportes y se hizo cargo del cobro. Fue directo desde el principio: me explicó qué se podía hacer y me mantuvo informado mientras avanzaba el caso.'),
+ ('Deudas','Tenía varias deudas y no sabía por dónde empezar. Klende puso las cosas en orden, me habló claro y definió cómo abordar mi situación. Lo que más valoré fue que respondió mis preguntas sin juzgarme.'),
+ ('Embargos y cobros','Recibí una notificación y me preocupaba dejar pasar algún plazo. Klende revisó el proceso, asumió mi representación y me explicó qué seguía. Siempre supe qué necesitaba de mí y qué estaba haciendo con el caso.'),
+ ('Contratos y patrimonio','Pensaba que el contrato estaba listo para firmar. Klende encontró puntos que podían comprometerme más de lo que había entendido y pidió que se aclararan. Esa revisión hizo que me tomara la firma con otros ojos.'),
+ ('Familia','Era un asunto familiar difícil y necesitaba hablar con confianza. Klende me escuchó, fue firme al representarme y cuidadoso con los detalles personales. Nunca me quedé con una duda por miedo a preguntar.')
+]
+
+def link(url, label, cls='button gold'):
+    return f'<a class="{cls}" href="{url}" target="_blank" rel="noopener noreferrer">{label}</a>'
+
+def adapt_shared(markup):
+    markup = markup.replace('https://wa.link/h2jnnc', GENERAL)
+    markup = re.sub(r'(href|src)="(assets/[^" ]+|[a-z-]+\.(?:css|js))"', r'\1="/\2"', markup)
+    markup = markup.replace('href="./"','href="/b/"')
+    for anchor in ('servicios','simon'):
+        markup = markup.replace(f'href="#{anchor}"',f'href="/b/#{anchor}"')
+    return markup
+
+def header(title, description):
+    markup = adapt_shared(SOURCE.split('<main id="contenido">',1)[0])
+    markup = re.sub(r'<title>.*?</title>',f'<title>{escape(title)} · Simón Abogado</title>',markup)
+    markup = re.sub(r'<meta name="description" content="[^"]*">',f'<meta name="description" content="{escape(description,quote=True)}">',markup)
+    return markup.replace('</head>','<link rel="stylesheet" href="/b/variant.css"></head>')
+
+def footer(contact_url=GENERAL):
+    markup = adapt_shared('<footer>'+SOURCE.split('<footer>',1)[1])
+    return markup.replace(GENERAL,contact_url)
+
+def steps(items):
+    return '<div class="steps">'+''.join(f'<article><span class="step-label">0{i}</span><h3>{title}</h3><p>{text}</p></article>' for i,(title,text) in enumerate(items,1))+'</div>'
+
+def faq(items):
+    return '<div class="faq-list">'+''.join(f'<details><summary>{q}<span class="plus" aria-hidden="true"></span></summary><p>{a}</p></details>' for q,a in items)+'</div>'
+
+cards=''.join(f'''<article class="service-card"><a class="service-cover" href="/b/servicios/{s['slug']}/" aria-label="Conocer el servicio de {s['name'].lower()}"><img src="/assets/servicios/{s['image']}.webp" alt="Escena ilustrativa de {s['name'].lower()}" width="1536" height="1024" loading="lazy" decoding="async"></a><div class="card-copy"><p class="card-label">{s['name'].upper()}</p><h3>{s['title']}</h3><p>{s['brief']}</p><a class="text-link" href="/b/servicios/{s['slug']}/" aria-label="Conocer el servicio de {s['name'].lower()}">Cómo puedo ayudarte</a></div></article>''' for s in SERVICES)
+reviews=''.join(f'<figure class="review-card"><span class="review-mark" aria-hidden="true">“</span><blockquote>{text}</blockquote><figcaption><strong>Cliente de {service.lower()}</strong>Testimonio de cliente</figcaption></figure>' for service,text in TESTIMONIALS)
+home=header('Defiende lo que has construido','Soy Klende Simon Villa. Te acompaño en cada etapa con experiencia jurídica, atención directa y una estrategia para defender tus intereses.')+f'''
+<main id="contenido"><section class="hero" id="inicio"><div class="hero-copy"><p class="eyebrow light">KLENDE SIMON VILLA · MÁS DE 5 AÑOS DE EXPERIENCIA</p><h1>Defiende lo que<br>has construido.<br><em>Actúa con respaldo.</em></h1><p class="hero-intro">Tu dinero, tu patrimonio y tu familia merecen una defensa firme. Estudio tu caso, defino la estrategia y te acompaño en cada etapa para defender tus intereses.</p>{link(GENERAL,'Quiero hablar contigo sobre mi caso')}<div class="hero-note"><span class="short-line" aria-hidden="true"></span><p>Cuando asumo tu caso, me involucro.<br>Cuentas con mi atención directa.</p></div></div><figure class="portrait"><img src="/assets/simon.jpg" alt="Klende Simon Villa, abogado" width="1086" height="1448" fetchpriority="high"><figcaption><span>Experiencia para actuar con firmeza.</span><small>KLENDE SIMON VILLA · ABOGADO</small></figcaption></figure></section>
+<div class="principles" aria-label="Mi compromiso contigo"><span>Estudio tu caso a fondo</span><span>Defino la estrategia</span><span>Te acompaño en cada etapa</span></div>
+<section class="section services" id="servicios"><div class="section-heading"><div><p class="eyebrow">ACTÚA SOBRE LO QUE TE PREOCUPA</p><h2>Tu situación requiere<br>una respuesta firme.</h2></div><p>Una deuda, un pago pendiente, un contrato o una decisión familiar. Conoce cómo trabajo para defender tus intereses.</p></div><div class="service-grid">{cards}</div><div class="service-footer"><p>¿Tu situación no aparece aquí?</p>{link(GENERAL,'Cuéntame qué necesitas resolver','text-link')}</div></section>
+<section class="approach section" id="simon"><div class="approach-statement"><p class="eyebrow">EXPERIENCIA Y ATENCIÓN DIRECTA</p><h2>Defiendo tus intereses.<br>Te acompaño<br><em>en cada etapa.</em></h2><p class="signature">Klende Simon Villa</p><span class="signature-caption">ABOGADO · MÁS DE CINCO AÑOS DE EXPERIENCIA</span></div><div class="approach-copy"><p class="lead">Cuando asumo tu caso, me involucro.</p><p>Soy <strong>Klende Simon Villa</strong>, abogado de la Universidad Libre con <strong>más de cinco años de experiencia</strong>. Sé lo que significa enfrentar un problema que compromete tu dinero, tu patrimonio o tu familia.</p><p>Estudio los documentos, defino la estrategia y dirijo las actuaciones necesarias para defender tus intereses. Combino <strong>análisis jurídico, negociación y conocimiento de los procesos</strong> para actuar con firmeza y propósito.</p><p>Te hablo de frente. Te explico las decisiones, te mantengo informado sobre los avances y atiendo tus preguntas durante el proceso. Desde la primera consulta hasta el cierre del servicio acordado, cuentas con mi atención directa.</p><p>Quiero que sepas quién lleva tu caso, qué estamos haciendo y cuál es el siguiente paso. Así construyo contigo la confianza y la tranquilidad que necesitas para avanzar.</p><div class="commitment">Compromiso que garantiza tu confianza.</div></div></section>
+<section class="process section" id="proceso"><div class="section-heading"><div><p class="eyebrow">ASÍ TRABAJO CONTIGO</p><h2>De la preocupación<br>a una estrategia.</h2></div><p>Asumo el trabajo jurídico con orden, criterio y comunicación directa. Tú conoces lo que ocurre con tu caso.</p></div>{steps([('Estudio tu situación','Escucho lo que necesitas proteger y reviso los documentos y antecedentes que respaldan tu caso.'),('Defino el camino','Te explico la estrategia, las actuaciones propuestas, los honorarios y el alcance del acompañamiento.'),('Actúo y te informo','Adelanto las gestiones acordadas y te mantengo al tanto de los avances y de las decisiones del proceso.')])}</section>
+<section class="section testimonials" id="testimonios"><div class="section-heading"><div><p class="eyebrow">EXPERIENCIAS DE MIS CLIENTES</p><h2>La confianza se construye<br>acompañando cada caso.</h2></div><p>Esto cuentan quienes han trabajado conmigo.</p></div><div class="review-grid">{reviews}</div></section>
+<section class="questions section"><div><p class="eyebrow">HABLEMOS CON CLARIDAD</p><h2>Respuestas antes<br>de empezar.</h2></div>{faq([('¿Hablaré directamente contigo?','Sí. Escucho tu situación, estudio tu caso y te explico cómo voy a acompañarte. Mantengo la atención directa durante el servicio acordado.'),('¿Cómo empezamos?','Escríbeme por WhatsApp y cuéntame qué ocurre. Te indico cómo coordinar la asesoría y qué documentos necesito revisar.'),('¿Cómo conoceré los honorarios?','Te explico el alcance del servicio, los honorarios y las condiciones antes de contratar. Con esa información decides cómo avanzar.'),('¿Necesito tener todos los documentos?','Puedes empezar con lo que tienes. Identifico la información que falta y te explico cómo organizarla para estudiar el caso.'),('¿Cómo sabré qué está pasando?','Te mantengo informado sobre las actuaciones y los avances. Te explico las decisiones y la información que necesito de ti durante el proceso.')])}</section>
+<section class="contact" id="consulta"><p class="eyebrow light">TU SIGUIENTE PASO EMPIEZA AQUÍ</p><h2>Defiende lo que importa.<br><em>Cuenta conmigo para actuar.</em></h2><p>Cuéntame qué está pasando. Estudio tu situación y te explico cómo puedo acompañarte.</p>{link(GENERAL,'Quiero hablar contigo sobre mi caso')}<span class="contact-note">Mi atención directa · Mi experiencia al servicio de tu caso</span></section></main>'''+footer()
+OUT.mkdir(parents=True,exist_ok=True)
+(OUT/'index.html').write_text(home,encoding='utf-8')
+
+for s in SERVICES:
+    url='https://wa.link/'+s['wa']
+    page=header(s['name'],s['brief'])+f'''<main id="contenido"><section class="detail-hero"><div class="detail-intro"><a class="back-link" href="/b/#servicios">Explorar todos los servicios</a><p class="eyebrow light">{s['name'].upper()}</p><h1>{s['title']}</h1><p>{s['intro']}</p>{link(url,s['cta'])}</div><figure class="detail-image"><img src="/assets/servicios/{s['image']}.webp" alt="Escena ilustrativa de {s['name'].lower()}" width="1536" height="1024" fetchpriority="high"></figure></section>
+<section class="section detail-context"><div><p class="eyebrow">ENTIENDO LO QUE ESTÁ EN JUEGO</p><h2>Tu preocupación<br>merece atención.</h2><p class="intro-text">Cuéntame lo que ocurre. Estudio los hechos y los documentos para definir cómo intervenir.</p></div><ul class="situation-list">{''.join('<li>'+item+'</li>' for item in s['situations'])}</ul></section>
+<section class="section detail-outcomes"><div class="section-heading"><div><p class="eyebrow">ASÍ ASUMO EL TRABAJO JURÍDICO</p><h2>Una estrategia.<br>Mi acompañamiento.</h2></div><p>Te hablo con claridad, organizo las actuaciones y te mantengo informado durante el servicio acordado.</p></div>{steps(s['steps'])}</section>
+<section class="section prepare"><div><p class="eyebrow">EMPECEMOS POR TU CASO</p><h2>Cuéntame qué ocurre.<br>Yo organizo la revisión.</h2></div><div class="prepare-copy"><p>{s['prepare']}</p><p>Antes de contratar, te explico el alcance de mi trabajo, los honorarios y las condiciones del acompañamiento.</p>{link(url,s['cta'],'text-link')}</div></section>
+<section class="questions section"><div><p class="eyebrow">RESPUESTAS DIRECTAS</p><h2>Lo que necesitas<br>saber para empezar.</h2></div>{faq(s['faq'])}</section>
+<section class="contact detail-contact"><p class="eyebrow light">CUENTA CON MI EXPERIENCIA</p><h2>{s['close']}</h2><p>Cuéntame tu situación. Te explico cómo puedo acompañarte y qué necesitamos para empezar.</p>{link(url,s['cta'])}<span class="contact-note">Atención directa conmigo · Klende Simon Villa</span><a class="other-service" href="/b/#servicios">Explorar otro servicio</a></section></main>'''+footer(url)
+    # On service pages, both the header CTA and floating button use this service's link.
+    page=page.replace(GENERAL,url)
+    folder=OUT/'servicios'/s['slug']
+    folder.mkdir(parents=True,exist_ok=True)
+    (folder/'index.html').write_text(page,encoding='utf-8')
+print('Version B generada en dist/b: inicio y seis servicios. Version A conservada.')
